@@ -8,7 +8,7 @@ gcc /src/main.c -o /out/main
 
 - [x] Download fast
 - [x] Hello world in C
-- [ ] Write function to create matrix based on the length of x string 
+- [x] Write function to create matrix based on the length of x string 
 - [ ] Create comparison function
 - [ ] Pull first chr from genomic data
 - [ ] Run comparison 

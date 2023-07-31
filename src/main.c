@@ -4,6 +4,9 @@
 // Create matrix and return it? 
 int* matrix_maker(int);
 
+// Compare string and return true/false
+bool nucleotide_compare(char,char);
+
 
 int main () {
 	
@@ -59,4 +62,19 @@ int* matrix_maker(int string_size){
 
 
 	return *arr;
+}
+
+
+
+// Compare string and return true/false
+bool nucleotide_compare(char row, char col){
+
+	if (char == 
+
+
+
+
+
+
+	return false
 }
