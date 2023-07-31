@@ -2,9 +2,9 @@
 
 
 ## Compile 
-'''bash
+```bash
 gcc /src/main.c -o /out/main
-'''
+```
 
 - [x] Download fast
 - [x] Hello world in C
