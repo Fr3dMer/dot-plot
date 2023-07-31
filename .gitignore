@@ -1,2 +1,6 @@
-.fa
-.fasta
+*.fa
+*.fasta.gz
+*.fasta
+
+*/out/*
+/out/*
