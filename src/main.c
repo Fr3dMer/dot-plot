@@ -27,40 +27,37 @@ int main () {
 	long int file_size = 0;
 	file_sizer(&file_size, filepath);
 
-	// Allocate space and re-open (just allocate in file opener and retunr ptr?)
+	// Allocate space and re-open (just allocate in file opener and return ptr?)
 	char* seq = (char*) malloc(file_size);
 	open_file(filepath,seq);
+	
+	int seq_size = strlen(seq);
+	//printf("%i",seq_size);
 
 	// Use malloc to reserve chunk of memory as 2d array
-	int *matrix = (int *)malloc( file_size * file_size * sizeof(int)); 
+	int *matrix = (int *)malloc(seq_size * seq_size * sizeof(int)); 
 
 	// Compare sequence to self
 	int i, j;
-	for (i = 0; i < file_size; i++){
-   		for (j = 0; j < file_size; j++){
-      		
-				if(seq[i] == seq[j]){
-				
-					*(matrix + i*file_size + j) = 255;
-
+	for (i = 0; i < seq_size; i++){
+   		for (j = 0; j < seq_size; j++){
+				//printf(" i:%c==j:%c ",seq[i],seq[j]);
+				if(seq[i] == seq[j]){		
+					*(matrix + i*seq_size + j) = 255;
 				}
 				else{
-
-					*(matrix + i*file_size + j) = 0;
-
+					*(matrix + i*seq_size + j) = 0;
 				}
-			
 		}
 	}
 
 	// write to file
-	write_file(out_path,matrix,file_size);
+	write_file(out_path,matrix,seq_size);
 
 	free(matrix);
 	free(seq);
 	
 	return 0;
-
 }
 
 // Open FASTA file and add contents to seq memmory address 
@@ -80,24 +77,23 @@ void open_file(char *file_Path, char *seq){
 	// Read the content and store it inside myString
 	while(fgets(seq_buffer, 150, fptr)){
 
-		// Ignore any line that begins with >
+		// Ignore any line that begins with > 
 		if('>' != *(seq_buffer)){
 
 			stringlen = strlen(seq_buffer);
 
-
-			// append to seq
+			// append to seq and grab only nucleotides
 			for(int i = 0; i < stringlen; i++){
-
+				
+				if(('A' == seq_buffer[i]) | ('T' == seq_buffer[i] )| ('C' == seq_buffer[i]) | ('G' == seq_buffer[i])){
 				*(seq+memoryloc+i) = seq_buffer[i];
-
+				}
 
 			}
 		memoryloc += stringlen;
 		}
 	}
 	
-	// Close the file
 	fclose(fptr); 
 
 }
@@ -114,7 +110,6 @@ void file_sizer(long int* file_size,char* file_Path){
 	fseek(fptr, 0L, SEEK_END);
 	*file_size = ftell(fptr);
 	
-	// Close the file
 	fclose(fptr); 
 
 }
@@ -125,7 +120,7 @@ void write_file(char* file_name,int* matrix,int string_size){
 	FILE *f = fopen(file_name, "wb");
 	fprintf(f, "P6\n%i %i 255\n", string_size, string_size);
 
-		// Create file for numpy
+		// Create image file
 	for (int i = 0; i < string_size; i++) {
    		for (int j = 0; j < string_size; j++) {
       		// 3 colours for future degree of similarity?
@@ -134,5 +129,6 @@ void write_file(char* file_name,int* matrix,int string_size){
         	fputc(*(matrix + i*string_size + j), f); 
    		}
 	}
+	
 	fclose(f);
 }
